@@ -145,7 +145,7 @@ export default function Home() {
           <div className="text-center mb-5">
             <Image className="mx-auto mb-6" width={56} height={56} src="/npm.svg" alt="logo" />
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3">
-              shadcn-password-indicator
+              shadcn-password-strength
             </h1>
             <p className="text-base text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
               A customizable, accessible password strength component for React. Multi-language
