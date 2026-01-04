@@ -7,6 +7,7 @@ import { CopyButton } from '@/components/CopyButton';
 import { PasswordStrength } from '@/lib';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import Image from 'next/image';
 
 // Code examples
 const basicExample = `import { useState } from "react";
@@ -142,8 +143,9 @@ export default function Home() {
         {/* Hero with Basic Example */}
         <section className="py-8">
           <div className="text-center mb-5">
+            <Image className="mx-auto mb-6" width={56} height={56} src="/npm.svg" alt="logo" />
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3">
-              Password Strength Indicator
+              shadcn-password-indicator
             </h1>
             <p className="text-base text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
               A customizable, accessible password strength component for React. Multi-language
@@ -229,7 +231,10 @@ export default function Home() {
                 <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto font-mono text-sm">
                   <code>npx shadcn@latest add input label</code>
                 </pre>
-                <CopyButton text="npx shadcn@latest add input label" className="absolute top-2 right-2" />
+                <CopyButton
+                  text="npx shadcn@latest add input label"
+                  className="absolute top-2 right-2"
+                />
               </div>
             </div>
 
@@ -447,7 +452,9 @@ import { Label } from "@/components/ui/label";`}
                   <td className="py-2 px-3 font-mono text-gray-900 dark:text-gray-100">
                     InputComponent
                   </td>
-                  <td className="py-2 px-3 font-mono text-gray-600 dark:text-gray-400">Component</td>
+                  <td className="py-2 px-3 font-mono text-gray-600 dark:text-gray-400">
+                    Component
+                  </td>
                   <td className="py-2 px-3 text-gray-500">-</td>
                   <td className="py-2 px-3 text-gray-600 dark:text-gray-400">shadcn Input</td>
                 </tr>
@@ -455,7 +462,9 @@ import { Label } from "@/components/ui/label";`}
                   <td className="py-2 px-3 font-mono text-gray-900 dark:text-gray-100">
                     LabelComponent
                   </td>
-                  <td className="py-2 px-3 font-mono text-gray-600 dark:text-gray-400">Component</td>
+                  <td className="py-2 px-3 font-mono text-gray-600 dark:text-gray-400">
+                    Component
+                  </td>
                   <td className="py-2 px-3 text-gray-500">-</td>
                   <td className="py-2 px-3 text-gray-600 dark:text-gray-400">shadcn Label</td>
                 </tr>
