@@ -37,11 +37,7 @@
     "build": "next build",
     "build:lib": "tsup",
     "start": "next start",
-    "lint": "eslint",
-    "prepublishOnly": "npm run build:lib",
-    "release:patch": "npm version patch && git push origin main --tags",
-    "release:minor": "npm version minor && git push origin main --tags",
-    "release:major": "npm version major && git push origin main --tags"
+    "lint": "eslint"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -53,6 +49,8 @@
   },
   "devDependencies": {
     "@radix-ui/react-label": "^2.1.8",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -67,6 +65,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-syntax-highlighter": "^16.1.0",
+    "semantic-release": "^24.2.9",
     "shiki": "^3.20.0",
     "tailwindcss": "^4",
     "tsup": "^8.5.1",
