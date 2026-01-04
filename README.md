@@ -1,6 +1,6 @@
 # shadcn-password-strength
 
-A customizable password strength indicator component for React with multi-language support.
+A customizable password strength indicator component for React with multi-language support
 
 [![npm version](https://img.shields.io/npm/v/shadcn-password-strength.svg)](https://www.npmjs.com/package/shadcn-password-strength)
 [![license](https://img.shields.io/npm/l/shadcn-password-strength.svg)](https://github.com/SamuelPrigent/shadcn-password-strength/blob/main/LICENSE)
@@ -30,13 +30,13 @@ npm install shadcn-password-strength
 ### 2. Use the component
 
 ```tsx
-import { useState } from "react";
-import { PasswordStrength } from "shadcn-password-strength";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useState } from 'react';
+import { PasswordStrength } from 'shadcn-password-strength';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 export function PasswordForm() {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
 
   return (
     <PasswordStrength
@@ -107,19 +107,19 @@ Prevent users from including their email in the password:
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | required | Password value |
-| `onChange` | `(value: string) => void` | - | Change callback |
-| `locale` | `"en" \| "fr" \| "es"` | `"en"` | Language |
-| `mode` | `"full" \| "bar-only"` | `"full"` | Display mode |
-| `levels` | `3 \| 4 \| 5` | `5` | Number of strength bars |
-| `maxRules` | `number` | `2` | Max rules shown in full mode |
-| `email` | `string` | - | Email to check against |
-| `forbiddenWords` | `string[]` | - | Words to exclude |
-| `hideInput` | `boolean` | `false` | Hide the input field |
-| `InputComponent` | `Component` | - | Your shadcn Input component |
-| `LabelComponent` | `Component` | - | Your shadcn Label component |
+| Prop             | Type                      | Default  | Description                  |
+| ---------------- | ------------------------- | -------- | ---------------------------- |
+| `value`          | `string`                  | required | Password value               |
+| `onChange`       | `(value: string) => void` | -        | Change callback              |
+| `locale`         | `"en" \| "fr" \| "es"`    | `"en"`   | Language                     |
+| `mode`           | `"full" \| "bar-only"`    | `"full"` | Display mode                 |
+| `levels`         | `3 \| 4 \| 5`             | `5`      | Number of strength bars      |
+| `maxRules`       | `number`                  | `2`      | Max rules shown in full mode |
+| `email`          | `string`                  | -        | Email to check against       |
+| `forbiddenWords` | `string[]`                | -        | Words to exclude             |
+| `hideInput`      | `boolean`                 | `false`  | Hide the input field         |
+| `InputComponent` | `Component`               | -        | Your shadcn Input component  |
+| `LabelComponent` | `Component`               | -        | Your shadcn Label component  |
 
 ## Documentation
 
