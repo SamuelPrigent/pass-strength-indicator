@@ -61,6 +61,7 @@
     "clsx": "^2.1.1"
   },
   "devDependencies": {
+    "tailwind-merge": "^3.4.0",
     "@radix-ui/react-label": "^2.1.8",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
