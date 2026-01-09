@@ -1,4 +1,4 @@
-export type Locale = "en" | "fr" | "es" | "de" | "pt" | "it" | "nl" | "pl";
+export type Locale = "en" | "fr" | "es" | "de" | "pt" | "it" | "nl" | "pl" | "sv" | "uk" | "zh" | "ja" | "ko";
 
 export type StrengthLevel = "veryWeak" | "weak" | "soso" | "good" | "strong";
 
@@ -47,6 +47,8 @@ export interface PasswordStrengthProps {
   label?: string;
   /** Whether to show the eye icon to toggle password visibility */
   showToggleVisibility?: boolean;
+  /** Tab index for the visibility toggle button (-1 by default to skip in tab order) */
+  toggleTabIndex?: number;
   /** Custom Input component (e.g. shadcn/ui Input) */
   InputComponent?: React.ComponentType<React.ComponentProps<"input">>;
   /** Custom Label component (e.g. shadcn/ui Label) */

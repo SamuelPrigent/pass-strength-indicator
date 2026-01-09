@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-// import { TableOfContents } from '@/components/TableOfContents';
 import { CodeBlock } from "@/components/CodeBlock";
 import { CopyButton } from "@/components/CopyButton";
 import { PasswordStrength } from "@/lib";
+import type { Locale } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
@@ -146,9 +146,7 @@ export function EmailCheckExample() {
 }`;
 
 // Locale configuration with inline SVG flags
-type SupportedLocale = "en" | "fr" | "es" | "de" | "pt" | "it" | "nl" | "pl";
-
-const flags: Record<SupportedLocale, React.ReactNode> = {
+const flags: Record<Locale, React.ReactNode> = {
   en: (
     <svg className="w-5 h-4 rounded-sm" viewBox="0 0 60 30">
       <clipPath id="s">
@@ -217,9 +215,44 @@ const flags: Record<SupportedLocale, React.ReactNode> = {
       <rect width="8" height="2.5" fill="#fff" />
     </svg>
   ),
+  sv: (
+    <svg className="w-5 h-4 rounded-sm" viewBox="0 0 16 10">
+      <rect width="16" height="10" fill="#006AA7" />
+      <rect x="5" width="2" height="10" fill="#FECC00" />
+      <rect y="4" width="16" height="2" fill="#FECC00" />
+    </svg>
+  ),
+  uk: (
+    <svg className="w-5 h-4 rounded-sm" viewBox="0 0 3 2">
+      <rect width="3" height="1" fill="#005BBB" />
+      <rect y="1" width="3" height="1" fill="#FFD500" />
+    </svg>
+  ),
+  zh: (
+    <svg className="w-5 h-4 rounded-sm" viewBox="0 0 30 20">
+      <rect width="30" height="20" fill="#DE2910" />
+      <polygon
+        fill="#FFDE00"
+        points="5,4 6,7 9,7 6.5,9 7.5,12 5,10 2.5,12 3.5,9 1,7 4,7"
+      />
+    </svg>
+  ),
+  ja: (
+    <svg className="w-5 h-4 rounded-sm" viewBox="0 0 3 2">
+      <rect width="3" height="2" fill="#fff" />
+      <circle cx="1.5" cy="1" r="0.6" fill="#BC002D" />
+    </svg>
+  ),
+  ko: (
+    <svg className="w-5 h-4 rounded-sm" viewBox="0 0 3 2">
+      <rect width="3" height="2" fill="#fff" />
+      <circle cx="1.5" cy="1" r="0.5" fill="#C60C30" />
+      <path d="M1.5,0.5 A0.5,0.5 0 0,1 1.5,1.5" fill="#003478" />
+    </svg>
+  ),
 };
 
-const localeLabels: Record<SupportedLocale, string> = {
+const localeLabels: Record<Locale, string> = {
   en: "en",
   fr: "fr",
   es: "es",
@@ -228,11 +261,16 @@ const localeLabels: Record<SupportedLocale, string> = {
   it: "it",
   nl: "nl",
   pl: "pl",
+  sv: "sv",
+  uk: "uk",
+  zh: "zh",
+  ja: "ja",
+  ko: "ko",
 };
 
 // Generate locale example code
 const generateLocaleExample = (
-  locale: SupportedLocale
+  locale: Locale
 ) => `import { useState } from "react";
 import { PasswordStrength } from "shadcn-password-strength";
 import { Input } from "@/components/ui/input";
@@ -266,7 +304,7 @@ export default function Home() {
   const [barsPassword, setBarsPassword] = useState(DEFAULT_BARS);
   const [emailValue, setEmailValue] = useState(DEFAULT_EMAIL);
   const [emailPassword, setEmailPassword] = useState(DEFAULT_EMAIL_PWD);
-  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale>("en");
+  const [selectedLocale, setSelectedLocale] = useState<Locale>("en");
   const [localePassword, setLocalePassword] = useState(DEFAULT_LOCALE_PWD);
 
   return (
@@ -330,95 +368,108 @@ export default function Home() {
           />
         </section>
 
-        {/* Setup */}
+        {/* Setup - Stripe-style without timeline */}
         <section id="setup" className="py-12">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-8">
             Setup
           </h2>
 
           <div className="space-y-6">
-            {/* Step 1: Tailwind */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                1. Make sure Tailwind CSS is installed
+            {/* Step 1 */}
+            <div className="pb-4">
+              <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-1">
+                1. Install Tailwind CSS
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                If not, follow the{" "}
+                Follow the{" "}
                 <a
                   href="https://tailwindcss.com/docs/installation"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-900 dark:text-gray-100 underline"
+                  className="underline underline-offset-2 hover:text-gray-900 dark:hover:text-gray-100"
                 >
-                  Tailwind CSS installation guide
-                </a>
+                  installation guide
+                </a>{" "}
+                if not already set up.
               </p>
             </div>
 
-            {/* Step 2: shadcn/ui */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            {/* Step 2 */}
+            <div className="pb-4">
+              <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-1">
                 2. Initialize shadcn/ui
               </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                Set up shadcn/ui in your project.
+              </p>
               <div className="relative">
-                <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto font-mono text-sm">
-                  <code>npx shadcn@latest init</code>
+                <pre className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-4 py-3 pr-12 font-mono text-sm text-gray-900 dark:text-gray-100 overflow-x-auto">
+                  npx shadcn@latest init
                 </pre>
                 <CopyButton
                   text="npx shadcn@latest init"
-                  className="absolute top-2 right-2"
+                  className="absolute top-2.5 right-2"
                 />
               </div>
             </div>
 
-            {/* Step 3: Install shadcn components */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            {/* Step 3 */}
+            <div className="pb-4">
+              <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-1">
                 3. Add Input and Label components
               </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                Install the required shadcn/ui components.
+              </p>
               <div className="relative">
-                <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto font-mono text-sm">
-                  <code>npx shadcn@latest add input label</code>
+                <pre className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-4 py-3 pr-12 font-mono text-sm text-gray-900 dark:text-gray-100 overflow-x-auto">
+                  npx shadcn@latest add input label
                 </pre>
                 <CopyButton
                   text="npx shadcn@latest add input label"
-                  className="absolute top-2 right-2"
+                  className="absolute top-2.5 right-2"
                 />
               </div>
             </div>
 
-            {/* Step 4: Install package */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            {/* Step 4 */}
+            <div className="pb-4">
+              <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-1">
                 4. Install the package
               </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                Add shadcn-password-strength to your project.
+              </p>
               <div className="relative">
-                <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto font-mono text-sm">
-                  <code>npm install shadcn-password-strength</code>
+                <pre className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-4 py-3 pr-12 font-mono text-sm text-gray-900 dark:text-gray-100 overflow-x-auto">
+                  npm install shadcn-password-strength
                 </pre>
                 <CopyButton
                   text="npm install shadcn-password-strength"
-                  className="absolute top-2 right-2"
+                  className="absolute top-2.5 right-2"
                 />
               </div>
             </div>
 
-            {/* Step 5: Import and use */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            {/* Step 5 */}
+            <div>
+              <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-1">
                 5. Import and use
               </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                Import package and pass your shadcn/ui components as props.
+              </p>
               <div className="relative">
-                <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto font-mono text-sm">
-                  <code>{`import { PasswordStrength } from "shadcn-password-strength";
+                <pre className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg px-4 py-3 pr-12 font-mono text-sm text-gray-900 dark:text-gray-100 overflow-x-auto">
+                  {`import { PasswordStrength } from "shadcn-password-strength";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";`}</code>
+import { Label } from "@/components/ui/label";`}
                 </pre>
                 <CopyButton
                   text={`import { PasswordStrength } from "shadcn-password-strength";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";`}
-                  className="absolute top-2 right-2"
+                  className="absolute top-2.5 right-2"
                 />
               </div>
             </div>
@@ -561,22 +612,20 @@ import { Label } from "@/components/ui/label";`}
               Multi-language Support
             </h3>
             <div className="flex flex-wrap items-center gap-2 mb-4">
-              {(Object.keys(localeLabels) as SupportedLocale[]).map(
-                (locale) => (
-                  <button
-                    key={locale}
-                    onClick={() => setSelectedLocale(locale)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all cursor-pointer ${
-                      selectedLocale === locale
-                        ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                        : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300"
-                    }`}
-                  >
-                    {flags[locale]}
-                    {localeLabels[locale]}
-                  </button>
-                )
-              )}
+              {(Object.keys(localeLabels) as Locale[]).map((locale) => (
+                <button
+                  key={locale}
+                  onClick={() => setSelectedLocale(locale)}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all cursor-pointer ${
+                    selectedLocale === locale
+                      ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                      : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300"
+                  }`}
+                >
+                  {flags[locale]}
+                  {localeLabels[locale]}
+                </button>
+              ))}
             </div>
             <CodeBlock
               code={generateLocaleExample(selectedLocale)}
@@ -631,10 +680,10 @@ import { Label } from "@/components/ui/label";`}
                     <td className="py-2 px-3 font-mono text-gray-900 dark:text-gray-100">
                       locale
                     </td>
-                    <td className="py-2 px-3 font-mono text-gray-600 dark:text-gray-400 text-xs">{`"en" | "fr" | "es" | "de" | "pt" | "it" | "nl" | "pl"`}</td>
+                    <td className="py-2 px-3 font-mono text-gray-600 dark:text-gray-400 text-xs">{`"en" | "fr" | ... | "ko"`}</td>
                     <td className="py-2 px-3 text-gray-500">{`"en"`}</td>
                     <td className="py-2 px-3 text-gray-600 dark:text-gray-400">
-                      Language
+                      13 languages supported
                     </td>
                   </tr>
                   <tr className="border-b border-gray-100 dark:border-gray-800/50">
@@ -802,7 +851,7 @@ import { Label } from "@/components/ui/label";`}
               rel="noopener noreferrer"
               className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
             >
-              {/* Samuel Prigent */}
+              Samuel Prigent
             </a>
           </p>
           <div className="flex items-center gap-4">

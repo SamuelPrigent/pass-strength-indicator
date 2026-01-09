@@ -7,7 +7,7 @@ A customizable password strength indicator component for React with multi-langua
 
 ## Features
 
-- **8 languages** supported: English, French, Spanish, German, Portuguese, Italian, Dutch, Polish
+- **13 languages** supported: English, French, Spanish, German, Portuguese, Italian, Dutch, Polish, Swedish, Ukrainian, Chinese, Japanese, Korean
 - **Flexible display**: Show 0-5 validation rules, or bar-only mode
 - **Configurable strength levels**: 3, 4, or 5 bars
 - **Email pattern detection**: Prevents users from using parts of their email in passwords
@@ -66,7 +66,7 @@ Set `maxRules={0}` to hide validation rules and show only the strength bar:
 
 ### Multi-language Support
 
-Available locales: `en`, `fr`, `es`, `de`, `pt`, `it`, `nl`, `pl`
+Available locales: `en`, `fr`, `es`, `de`, `pt`, `it`, `nl`, `pl`, `sv`, `uk`, `zh`, `ja`, `ko`
 
 ```tsx
 <PasswordStrength
@@ -142,18 +142,33 @@ Choose between 3, 4, or 5 strength bars:
 
 | Prop          | Type                                                           | Default | Description                               |
 | ------------- | -------------------------------------------------------------- | ------- | ----------------------------------------- |
-| `locale`      | `"en" \| "fr" \| "es" \| "de" \| "pt" \| "it" \| "nl" \| "pl"` | `"en"`  | Language for labels and messages          |
+| `locale`      | `"en" \| "fr" \| ... \| "ko"` | `"en"`  | Language (en, fr, es, de, pt, it, nl, pl, sv, uk, zh, ja, ko) |
 | `barsNumber`  | `3 \| 4 \| 5`                                                  | `5`     | Number of strength indicator bars         |
 | `maxRules`    | `number`                                                       | `2`     | Max validation rules shown (0 = bar only) |
 | `placeholder` | `string`                                                       | -       | Input placeholder text                    |
 | `label`       | `string`                                                       | -       | Input label text                          |
 
-### Utility
+### Validation
 
 | Prop             | Type       | Description                                    |
 | ---------------- | ---------- | ---------------------------------------------- |
 | `email`          | `string`   | Detects 4+ consecutive chars from email        |
 | `forbiddenWords` | `string[]` | Words that cannot be in the password (-2 score)|
+
+### Visibility Toggle
+
+| Prop                   | Type      | Default | Description                                      |
+| ---------------------- | --------- | ------- | ------------------------------------------------ |
+| `showToggleVisibility` | `boolean` | `true`  | Show/hide password visibility toggle button      |
+| `toggleTabIndex`       | `number`  | `-1`    | Tab index for the visibility toggle button       |
+
+### Styling
+
+| Prop             | Type     | Description                                  |
+| ---------------- | -------- | -------------------------------------------- |
+| `className`      | `string` | Additional class name for the container      |
+| `barClassName`   | `string` | Additional class name for the strength bars  |
+| `inputClassName` | `string` | Additional class name for the input field    |
 
 ## Password Rules
 

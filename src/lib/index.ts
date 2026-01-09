@@ -15,5 +15,10 @@ export type {
 } from "./types";
 
 // Utilities
-export { getTranslation, translations } from "./translations";
+export {
+  loadTranslation,
+  getTranslationSync,
+  preloadTranslation,
+  type Translation,
+} from "./translations/index";
 export { defaultRules, optionalRules, evaluatePassword } from "./rules";
