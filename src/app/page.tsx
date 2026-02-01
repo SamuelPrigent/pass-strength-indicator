@@ -10,7 +10,7 @@ import type { Locale } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/PasswordInput";
-//
+
 // Code examples
 const basicExample = `import { useState } from "react";
 import { PasswordStrength } from "pass-strength-indicator";
