@@ -37,10 +37,10 @@ export interface PasswordStrengthProps {
   className?: string;
   /** Additional class name for the strength bars */
   barClassName?: string;
-  /** Visual bar mode: "default" (segmented bars) or "rounded" (continuous bar) */
-  barMode?: "default" | "rounded";
-  /** Background for the rules card. When set, wraps rules in a card.
+  /** Visual bar mode: "default" (segmented bars) or "full" (continuous bar) */
+  barMode?: "default" | "full";
+  /** Background for the indicator card. When set, wraps rules in a card.
    *  - string: Tailwind classes (e.g. "bg-zinc-100 dark:bg-zinc-900")
    *  - object: CSS colors for light/dark mode (e.g. { light: "#f5f5f5", dark: "#1c1c1c" }) */
-  rulesBackground?: string | { light: string; dark: string };
+  indicatorBackground?: string | { light: string; dark: string };
 }

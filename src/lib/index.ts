@@ -16,6 +16,7 @@ export type {
 
 // Utilities
 export {
+  getTranslation,
   loadTranslation,
   getTranslationSync,
   preloadTranslation,

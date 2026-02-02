@@ -98,7 +98,7 @@ export function BarModeExample() {
         <PasswordStrength value={password} barMode="default" />
       </div>
 
-      {/* Rounded - continuous bar */}
+      {/* Full - continuous bar */}
       <div className="space-y-2">
         <input
           type="password"
@@ -106,16 +106,16 @@ export function BarModeExample() {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full px-3 py-2 border rounded-lg"
         />
-        <PasswordStrength value={password} barMode="rounded" />
+        <PasswordStrength value={password} barMode="full" />
       </div>
     </div>
   );
 }`;
 
-const rulesBgExample = `import { useState } from "react";
+const indicatorBgExample = `import { useState } from "react";
 import { PasswordStrength } from "pass-strength-indicator";
 
-export function RulesBackgroundExample() {
+export function IndicatorBackgroundExample() {
   const [password, setPassword] = useState("");
 
   return (
@@ -129,13 +129,13 @@ export function RulesBackgroundExample() {
       {/* With Tailwind classes */}
       <PasswordStrength
         value={password}
-        rulesBackground="bg-[#f9f9f9] dark:bg-[#eeeeee0f]"
+        indicatorBackground="bg-[#f9f9f9] dark:bg-[#eeeeee0f]"
       />
       {/* Via CSS */}
       {/*
       <PasswordStrength
         value={password}
-        rulesBackground={{ light: "#f9f9f9", dark: "#eeeeee0f" }}
+        indicatorBackground={{ light: "#f9f9f9", dark: "#eeeeee0f" }}
       />
       */}
     </div>
@@ -376,7 +376,7 @@ export function Example() {
 const DEFAULT_BASIC = "MyP@ssw0rd123";
 const DEFAULT_MAX_RULES = "Str0ng!Pass";
 const DEFAULT_BARMODE = "Str0ng!Pass";
-const DEFAULT_RULESBG = "Str0ng!Pass";
+const DEFAULT_INDICATORBG = "Str0ng!Pass";
 const DEFAULT_BARS = "Test@123";
 const DEFAULT_EMAIL = "johndoe@mail.com";
 const DEFAULT_EMAIL_PWD = "ndoe9120*JOk";
@@ -386,7 +386,7 @@ export default function Home() {
   const [basicPassword, setBasicPassword] = useState(DEFAULT_BASIC);
   const [maxRulesPassword, setMaxRulesPassword] = useState(DEFAULT_MAX_RULES);
   const [barModePassword, setBarModePassword] = useState(DEFAULT_BARMODE);
-  const [rulesBgPassword, setRulesBgPassword] = useState(DEFAULT_RULESBG);
+  const [indicatorBgPassword, setIndicatorBgPassword] = useState(DEFAULT_INDICATORBG);
   const [barsPassword, setBarsPassword] = useState(DEFAULT_BARS);
   const [emailValue, setEmailValue] = useState(DEFAULT_EMAIL);
   const [emailPassword, setEmailPassword] = useState(DEFAULT_EMAIL_PWD);
@@ -503,6 +503,7 @@ export default function Home() {
               preview={
                 <div className="space-y-12">
                   <div className="space-y-2">
+                    {/* <div className="text-xs font-mono font-semibold text-gray-900 dark:text-gray-100 mb-2">{`maxRules={0} :`}</div> */}
                     <Label htmlFor="demo-maxrules-0">Password</Label>
                     <PasswordInput
                       id="demo-maxrules-0"
@@ -514,6 +515,7 @@ export default function Home() {
                     <PasswordStrength value={maxRulesPassword} maxRules={0} />
                   </div>
                   <div className="space-y-2">
+                    {/* <div className="text-xs font-mono font-semibold text-gray-900 dark:text-gray-100 mb-2">{`maxRules={2} :`}</div> */}
                     <Label htmlFor="demo-maxrules-2">Password</Label>
                     <PasswordInput
                       id="demo-maxrules-2"
@@ -525,6 +527,7 @@ export default function Home() {
                     <PasswordStrength value={maxRulesPassword} maxRules={2} />
                   </div>
                   <div className="space-y-2">
+                    {/* <div className="text-xs font-mono font-semibold text-gray-900 dark:text-gray-100 mb-2">{`maxRules={3} :`}</div> */}
                     <Label htmlFor="demo-maxrules-3">Password</Label>
                     <PasswordInput
                       id="demo-maxrules-3"
@@ -546,7 +549,7 @@ export default function Home() {
               barMode
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Choose between segmented bars (default) or a continuous rounded
+              Choose between segmented bars (default) or a continuous full
               bar.
             </p>
             <CodeBlock
@@ -555,7 +558,8 @@ export default function Home() {
               preview={
                 <div className="space-y-12">
                   <div className="space-y-2">
-                    <Label htmlFor="demo-barmode-default">Default</Label>
+                    {/* <div className="text-xs font-mono font-semibold text-gray-900 dark:text-gray-100 mb-2">{`barMode="default" :`}</div> */}
+                    <Label htmlFor="demo-barmode-default">Password</Label>
                     <PasswordInput
                       id="demo-barmode-default"
                       value={barModePassword}
@@ -569,9 +573,10 @@ export default function Home() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="demo-barmode-rounded">Rounded</Label>
+                    {/* <div className="text-xs font-mono font-semibold text-gray-900 dark:text-gray-100 mb-2">{`barMode="full" :`}</div> */}
+                    <Label htmlFor="demo-barmode-full">Password</Label>
                     <PasswordInput
-                      id="demo-barmode-rounded"
+                      id="demo-barmode-full"
                       value={barModePassword}
                       onChange={(e) => setBarModePassword(e.target.value)}
                       visible={barModeVisible}
@@ -579,7 +584,7 @@ export default function Home() {
                     />
                     <PasswordStrength
                       value={barModePassword}
-                      barMode="rounded"
+                      barMode="full"
                     />
                   </div>
                 </div>
@@ -587,29 +592,30 @@ export default function Home() {
             />
           </div>
 
-          {/* Rules Background */}
+          {/* Indicator Background */}
           <div className="space-y-3">
             <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-              rulesBackground
+              indicatorBackground
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Add a card background around the rules section. Pass a Tailwind
+              Add a card background around the indicator section. Pass a Tailwind
               class string or an object with light/dark CSS colors.
             </p>
             <CodeBlock
-              code={rulesBgExample}
-              onReset={() => setRulesBgPassword(DEFAULT_RULESBG)}
+              code={indicatorBgExample}
+              onReset={() => setIndicatorBgPassword(DEFAULT_INDICATORBG)}
               preview={
                 <div className="space-y-2">
-                  <Label htmlFor="demo-rulesbg">Password</Label>
+                  {/* <div className="text-xs font-mono font-semibold text-gray-900 dark:text-gray-100 mb-2">{`indicatorBackground="bg-[#f9f9f9] dark:bg-[#eeeeee0f]" :`}</div> */}
+                  <Label htmlFor="demo-indicatorbg">Password</Label>
                   <PasswordInput
-                    id="demo-rulesbg"
-                    value={rulesBgPassword}
-                    onChange={(e) => setRulesBgPassword(e.target.value)}
+                    id="demo-indicatorbg"
+                    value={indicatorBgPassword}
+                    onChange={(e) => setIndicatorBgPassword(e.target.value)}
                   />
                   <PasswordStrength
-                    value={rulesBgPassword}
-                    rulesBackground="bg-[#f9f9f9] dark:bg-[#eeeeee0f]"
+                    value={indicatorBgPassword}
+                    indicatorBackground="bg-[#f9f9f9] dark:bg-[#eeeeee0f]"
                   />
                 </div>
               }
@@ -630,6 +636,7 @@ export default function Home() {
               preview={
                 <div className="space-y-12">
                   <div className="space-y-2">
+                    {/* <div className="text-xs font-mono font-semibold text-gray-900 dark:text-gray-100 mb-2">{`barsNumber={3} :`}</div> */}
                     <Label htmlFor="demo-bars-3">Password</Label>
                     <PasswordInput
                       id="demo-bars-3"
@@ -645,6 +652,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="space-y-2">
+                    {/* <div className="text-xs font-mono font-semibold text-gray-900 dark:text-gray-100 mb-2">{`barsNumber={4} :`}</div> */}
                     <Label htmlFor="demo-bars-4">Password</Label>
                     <PasswordInput
                       id="demo-bars-4"
@@ -660,6 +668,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="space-y-2">
+                    {/* <div className="text-xs font-mono font-semibold text-gray-900 dark:text-gray-100 mb-2">{`barsNumber={5} :`}</div> */}
                     <Label htmlFor="demo-bars-5">Password</Label>
                     <PasswordInput
                       id="demo-bars-5"
@@ -812,7 +821,7 @@ export default function Home() {
                     <td className="py-2 px-3 font-mono text-gray-900 dark:text-gray-100">
                       barMode
                     </td>
-                    <td className="py-2 px-3 font-mono text-gray-600 dark:text-gray-400 text-xs">{`"default" | "rounded"`}</td>
+                    <td className="py-2 px-3 font-mono text-gray-600 dark:text-gray-400 text-xs">{`"default" | "full"`}</td>
                     <td className="py-2 px-3 text-gray-500">{`"default"`}</td>
                     <td className="py-2 px-3 text-gray-600 dark:text-gray-400">
                       Visual bar mode variant
@@ -820,12 +829,12 @@ export default function Home() {
                   </tr>
                   <tr className="border-b border-gray-100 dark:border-gray-800/50">
                     <td className="py-2 px-3 font-mono text-gray-900 dark:text-gray-100">
-                      rulesBackground
+                      indicatorBackground
                     </td>
                     <td className="py-2 px-3 font-mono text-gray-600 dark:text-gray-400 text-xs">{`string | { light, dark }`}</td>
                     <td className="py-2 px-3 text-gray-500">-</td>
                     <td className="py-2 px-3 text-gray-600 dark:text-gray-400">
-                      Wraps rules in a card with background. Pass Tailwind
+                      Wraps indicator in a card with background. Pass Tailwind
                       classes{" "}
                       <code className="text-xs font-mono text-gray-500">{`"bg-zinc-100 dark:bg-zinc-900"`}</code>{" "}
                       or CSS colors{" "}

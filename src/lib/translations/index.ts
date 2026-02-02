@@ -1,91 +1,46 @@
 import type { Translation } from './types';
 
-// Cache des traductions déjà chargées
-const translationCache = new Map<string, Translation>();
+// All translations bundled synchronously (~8KB total, eliminates flash on locale switch)
+import { en } from './en';
+import { fr } from './fr';
+import { es } from './es';
+import { de } from './de';
+import { pt } from './pt';
+import { it } from './it';
+import { nl } from './nl';
+import { pl } from './pl';
+import { sv } from './sv';
+import { uk } from './uk';
+import { zh } from './zh';
+import { ja } from './ja';
+import { ko } from './ko';
 
-// Traduction par défaut (anglais) chargée de manière synchrone pour le fallback
-import { en as defaultTranslation } from './en';
+const defaultTranslation = en;
+
+const translations: Record<string, Translation> = {
+  en, fr, es, de, pt, it, nl, pl, sv, uk, zh, ja, ko,
+};
 
 /**
- * Charge une traduction de manière asynchrone (lazy loading)
- * Retourne la traduction en cache si déjà chargée
+ * Returns the translation for a locale synchronously.
+ * Falls back to English if the locale is not found.
  */
+export function getTranslation(locale: string): Translation {
+  return translations[locale] ?? defaultTranslation;
+}
+
+// Backward-compatible exports
+
 export async function loadTranslation(locale: string): Promise<Translation> {
-  // Vérifier le cache
-  if (translationCache.has(locale)) {
-    return translationCache.get(locale)!;
-  }
-
-  try {
-    let translation: Translation;
-
-    // Dynamic imports pour chaque locale
-    switch (locale) {
-      case 'en':
-        translation = (await import('./en')).en;
-        break;
-      case 'fr':
-        translation = (await import('./fr')).fr;
-        break;
-      case 'es':
-        translation = (await import('./es')).es;
-        break;
-      case 'de':
-        translation = (await import('./de')).de;
-        break;
-      case 'pt':
-        translation = (await import('./pt')).pt;
-        break;
-      case 'it':
-        translation = (await import('./it')).it;
-        break;
-      case 'nl':
-        translation = (await import('./nl')).nl;
-        break;
-      case 'pl':
-        translation = (await import('./pl')).pl;
-        break;
-      case 'sv':
-        translation = (await import('./sv')).sv;
-        break;
-      case 'uk':
-        translation = (await import('./uk')).uk;
-        break;
-      case 'zh':
-        translation = (await import('./zh')).zh;
-        break;
-      case 'ja':
-        translation = (await import('./ja')).ja;
-        break;
-      case 'ko':
-        translation = (await import('./ko')).ko;
-        break;
-      default:
-        translation = defaultTranslation;
-    }
-
-    // Mettre en cache
-    translationCache.set(locale, translation);
-    return translation;
-  } catch {
-    // Fallback vers l'anglais en cas d'erreur
-    return defaultTranslation;
-  }
+  return getTranslation(locale);
 }
 
-/**
- * Obtient une traduction de manière synchrone (depuis le cache ou fallback)
- * Utilisé pour le rendu initial avant que la traduction async soit chargée
- */
 export function getTranslationSync(locale: string): Translation {
-  return translationCache.get(locale) ?? defaultTranslation;
+  return getTranslation(locale);
 }
 
-/**
- * Précharge une traduction (utile pour optimiser le chargement)
- */
-export function preloadTranslation(locale: string): void {
-  loadTranslation(locale);
+export function preloadTranslation(_locale: string): void {
+  // No-op: all translations are bundled
 }
 
 export type { Translation };

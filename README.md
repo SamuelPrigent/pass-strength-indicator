@@ -9,7 +9,7 @@ A customizable, accessible password strength indicator for React. Multi-language
 
 - **Indicator-only** — bring your own input, the component only renders the strength bar and rules
 - **13 languages** supported: en, fr, es, de, pt, it, nl, pl, sv, uk, zh, ja, ko
-- **2 bar modes**: segmented bars (`default`) or continuous rounded bar (`rounded`)
+- **2 bar modes**: segmented bars (`default`) or continuous bar (`full`)
 - **Configurable strength levels**: 3, 4, or 5 bars
 - **Flexible display**: show 0–5 validation rules, or bar-only mode
 - **Email pattern detection**: prevents users from using parts of their email in passwords
@@ -61,12 +61,12 @@ Set `maxRules={0}` to hide validation rules and show only the strength bar:
 <PasswordStrength value={password} maxRules={0} />
 ```
 
-### Rounded Bar Mode
+### Full Bar Mode
 
-Use `barMode="rounded"` for a continuous rounded bar instead of segmented bars:
+Use `barMode="full"` for a continuous bar instead of segmented bars:
 
 ```tsx
-<PasswordStrength value={password} barMode="rounded" />
+<PasswordStrength value={password} barMode="full" />
 ```
 
 ### Multi-language Support
@@ -93,21 +93,21 @@ Choose between 3, 4, or 5 strength bars:
 <PasswordStrength value={password} barsNumber={3} maxRules={0} />
 ```
 
-### Rules Background
+### Indicator Background
 
-Add a card background around the rules section. Independent from `barMode`.
+Add a card background around the indicator section. Independent from `barMode`.
 
 ```tsx
 {/* Tailwind classes */}
 <PasswordStrength
   value={password}
-  rulesBackground="bg-zinc-100 dark:bg-zinc-900"
+  indicatorBackground="bg-zinc-100 dark:bg-zinc-900"
 />
 
 {/* CSS colors (light/dark) */}
 <PasswordStrength
   value={password}
-  rulesBackground={{ light: "#f5f5f5", dark: "#1c1c1c" }}
+  indicatorBackground={{ light: "#f5f5f5", dark: "#1c1c1c" }}
 />
 ```
 
@@ -117,8 +117,8 @@ Add a card background around the rules section. Independent from `barMode`.
 <PasswordStrength
   value={password}
   locale="fr"
-  barMode="rounded"
-  rulesBackground="bg-zinc-100 dark:bg-zinc-900"
+  barMode="full"
+  indicatorBackground="bg-zinc-100 dark:bg-zinc-900"
   barsNumber={5}
   maxRules={3}
   email="user@example.com"
@@ -132,8 +132,8 @@ Add a card background around the rules section. Independent from `barMode`.
 | --- | --- | --- | --- |
 | `value` | `string` | required | Password value |
 | `locale` | `"en" \| "fr" \| ... \| "ko"` | `"en"` | Language (13 supported) |
-| `barMode` | `"default" \| "rounded"` | `"default"` | Segmented bars or continuous rounded bar |
-| `rulesBackground` | `string \| { light, dark }` | - | Rules card background (Tailwind or CSS colors) |
+| `barMode` | `"default" \| "full"` | `"default"` | Segmented bars or continuous bar |
+| `indicatorBackground` | `string \| { light, dark }` | - | Indicator card background (Tailwind or CSS colors) |
 | `barsNumber` | `3 \| 4 \| 5` | `5` | Number of strength indicator bars |
 | `maxRules` | `number` | `2` | Max validation rules shown (0 = bar only) |
 | `email` | `string` | - | Detects 4+ consecutive chars from email |

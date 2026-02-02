@@ -1,14 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { clsx } from "clsx";
 import type { PasswordStrengthProps, StrengthLevel } from "./types";
 import { usePasswordStrength, levelToActiveBars } from "./usePasswordStrength";
-import {
-  loadTranslation,
-  getTranslationSync,
-  type Translation,
-} from "./translations/index";
+import { getTranslation, type Translation } from "./translations/index";
 import { CheckIcon, XIcon } from "./icons";
 
 // Strength level colors
@@ -35,7 +31,137 @@ const levelColors: Record<StrengthLevel, { bar: string; text: string }> = {
   },
 };
 
-export function PasswordStrength({
+/* ── Internal sub-components ── */
+
+/** Renders the "Password must include" heading + validation rules list. */
+function RulesList({
+  displayRules,
+  passedRules,
+  translation,
+}: {
+  displayRules: string[];
+  passedRules: string[];
+  translation: Translation;
+}) {
+  return (
+    <>
+      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        {translation.passwordMustInclude}
+      </p>
+      <ul className="space-y-1">
+        {displayRules.map((ruleId) => {
+          const isPassed = passedRules.includes(ruleId);
+          const ruleLabel =
+            translation.rules[ruleId as keyof typeof translation.rules];
+          return (
+            <li
+              key={ruleId}
+              className={clsx(
+                "flex items-center gap-[10px] text-sm transition-colors",
+                isPassed
+                  ? "text-green-600 dark:text-green-400"
+                  : "text-gray-600 dark:text-gray-400",
+              )}
+            >
+              {isPassed ? (
+                <CheckIcon className="text-blue-500 shrink-0" />
+              ) : (
+                <XIcon className="text-gray-400 shrink-0" />
+              )}
+              <span className="text-black dark:text-white">{ruleLabel}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+}
+
+/** Renders the strength label row + bar (full or segmented). */
+function StrengthBar({
+  isFull,
+  percentage,
+  activeBars,
+  barsNumber,
+  colors,
+  barClassName,
+  level,
+  translation,
+  segmentSpacing = "mt-[6px]",
+}: {
+  isFull: boolean;
+  percentage: number;
+  activeBars: number;
+  barsNumber: number;
+  colors: { bar: string; text: string };
+  barClassName?: string;
+  level: StrengthLevel;
+  translation: Translation;
+  segmentSpacing?: string;
+}) {
+  return (
+    <>
+      <div className="flex items-center justify-between text-sm">
+        <span className="text-gray-600 dark:text-gray-400 font-medium">
+          {translation.passwordStrength}
+        </span>
+        <span
+          className={clsx("font-medium", colors.text)}
+          aria-live="polite"
+        >
+          {translation.levels[level]}
+        </span>
+      </div>
+      {isFull ? (
+        <div
+          role="progressbar"
+          aria-valuenow={percentage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={translation.passwordStrength}
+          className={clsx(
+            "h-1 w-full rounded-full bg-gray-200 dark:bg-gray-700",
+            barClassName,
+          )}
+        >
+          <div
+            className={clsx(
+              "h-1 rounded-full transition-all duration-300",
+              colors.bar,
+            )}
+            style={{ width: `${percentage}%` }}
+          />
+        </div>
+      ) : (
+        <div
+          role="progressbar"
+          aria-valuenow={activeBars}
+          aria-valuemin={0}
+          aria-valuemax={barsNumber}
+          aria-label={translation.passwordStrength}
+          className={clsx("flex gap-1", barClassName)}
+        >
+          {Array.from({ length: barsNumber }).map((_, index) => (
+            <div
+              key={index}
+              className={clsx(
+                "h-[3.5px] flex-1 rounded-full transition-all duration-300",
+                segmentSpacing,
+                index < activeBars
+                  ? colors.bar
+                  : "bg-gray-200 dark:bg-gray-700",
+              )}
+            />
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ── Main component ── */
+
+export const PasswordStrength = React.memo(function PasswordStrength({
   value,
   locale = "en",
   barsNumber = 5,
@@ -45,15 +171,9 @@ export function PasswordStrength({
   className,
   barClassName,
   barMode = "default",
-  rulesBackground,
+  indicatorBackground,
 }: PasswordStrengthProps) {
-  const [translation, setTranslation] = useState<Translation>(() =>
-    getTranslationSync(locale),
-  );
-
-  useEffect(() => {
-    loadTranslation(locale).then(setTranslation);
-  }, [locale]);
+  const translation = getTranslation(locale);
 
   const { level, passedRules, failedRules, percentage } = usePasswordStrength(
     value,
@@ -62,7 +182,7 @@ export function PasswordStrength({
 
   const colors = levelColors[level];
   const activeBars = levelToActiveBars(level, barsNumber);
-  const isRounded = barMode === "rounded";
+  const isFull = barMode === "full";
 
   const displayRules = useMemo(
     () =>
@@ -76,23 +196,34 @@ export function PasswordStrength({
   const hasValue = value && value.length > 0;
   const hasRules = maxRules > 0 && displayRules.length > 0;
 
-  // Resolve rulesBackground
+  // Resolve indicatorBackground
   let cardBgClass: string | undefined;
   let cardBgStyle: React.CSSProperties | undefined;
 
-  if (rulesBackground) {
-    if (typeof rulesBackground === "object") {
+  if (indicatorBackground) {
+    if (typeof indicatorBackground === "object") {
       cardBgStyle = {
-        "--rcbg-l": rulesBackground.light,
-        "--rcbg-d": rulesBackground.dark,
+        "--rcbg-l": indicatorBackground.light,
+        "--rcbg-d": indicatorBackground.dark,
       } as React.CSSProperties;
       cardBgClass = "bg-[var(--rcbg-l)] dark:bg-[var(--rcbg-d)]";
     } else {
-      cardBgClass = rulesBackground;
+      cardBgClass = indicatorBackground;
     }
   }
 
-  const showCard = hasRules && !!rulesBackground;
+  const showCard = hasRules && !!indicatorBackground;
+
+  const barProps = {
+    isFull,
+    percentage,
+    activeBars,
+    barsNumber,
+    colors,
+    barClassName,
+    level,
+    translation,
+  } as const;
 
   return (
     <div className={clsx("w-full", className)}>
@@ -107,78 +238,15 @@ export function PasswordStrength({
               )}
               style={cardBgStyle}
             >
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {translation.passwordMustInclude}
-              </p>
-              <ul className="space-y-1">
-                {displayRules.map((ruleId) => {
-                  const isPassed = passedRules.includes(ruleId);
-                  const ruleLabel =
-                    translation.rules[ruleId as keyof typeof translation.rules];
-                  return (
-                    <li
-                      key={ruleId}
-                      className={clsx(
-                        "flex items-center gap-[10px] text-sm transition-colors",
-                        isPassed
-                          ? "text-green-600 dark:text-green-400"
-                          : "text-gray-600 dark:text-gray-400",
-                      )}
-                    >
-                      {isPassed ? (
-                        <CheckIcon className="text-blue-500 shrink-0" />
-                      ) : (
-                        <XIcon className="text-gray-400 shrink-0" />
-                      )}
-                      <span className="text-black dark:text-white">
-                        {ruleLabel}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-
+              <RulesList
+                displayRules={displayRules}
+                passedRules={passedRules}
+                translation={translation}
+              />
               <div
-                className={clsx("space-y-1.5", !isRounded && "pt-[6px] pb-2")}
+                className={clsx("space-y-1.5", !isFull && "pt-[6px] pb-2")}
               >
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400 font-medium">
-                    {translation.passwordStrength}
-                  </span>
-                  <span className={clsx("font-medium", colors.text)}>
-                    {translation.levels[level]}
-                  </span>
-                </div>
-                {isRounded ? (
-                  <div
-                    className={clsx(
-                      "h-1 w-full rounded-full bg-gray-200 dark:bg-gray-700",
-                      barClassName,
-                    )}
-                  >
-                    <div
-                      className={clsx(
-                        "h-1 rounded-full transition-all duration-300",
-                        colors.bar,
-                      )}
-                      style={{ width: `${percentage}%` }}
-                    />
-                  </div>
-                ) : (
-                  <div className={clsx("flex gap-1", barClassName)}>
-                    {Array.from({ length: barsNumber }).map((_, index) => (
-                      <div
-                        key={index}
-                        className={clsx(
-                          "h-[3.5px] mt-[6px] flex-1 rounded-full transition-all duration-300",
-                          index < activeBars
-                            ? colors.bar
-                            : "bg-gray-200 dark:bg-gray-700",
-                        )}
-                      />
-                    ))}
-                  </div>
-                )}
+                <StrengthBar {...barProps} />
               </div>
             </div>
           )}
@@ -187,79 +255,14 @@ export function PasswordStrength({
           {hasRules && !showCard && (
             <div className="space-y-3 mt-4">
               <div className="space-y-1.5">
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {translation.passwordMustInclude}
-                </p>
-                <ul className="space-y-1">
-                  {displayRules.map((ruleId) => {
-                    const isPassed = passedRules.includes(ruleId);
-                    const ruleLabel =
-                      translation.rules[
-                        ruleId as keyof typeof translation.rules
-                      ];
-                    return (
-                      <li
-                        key={ruleId}
-                        className={clsx(
-                          "flex items-center gap-[10px] text-sm transition-colors",
-                          isPassed
-                            ? "text-green-600 dark:text-green-400"
-                            : "text-gray-600 dark:text-gray-400",
-                        )}
-                      >
-                        {isPassed ? (
-                          <CheckIcon className="text-blue-500 shrink-0" />
-                        ) : (
-                          <XIcon className="text-gray-400 shrink-0" />
-                        )}
-                        <span className="text-black dark:text-white">
-                          {ruleLabel}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <RulesList
+                  displayRules={displayRules}
+                  passedRules={passedRules}
+                  translation={translation}
+                />
               </div>
-
               <div className="space-y-1.5 mt-3.5">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400 font-medium">
-                    {translation.passwordStrength}
-                  </span>
-                  <span className={clsx("font-medium", colors.text)}>
-                    {translation.levels[level]}
-                  </span>
-                </div>
-                {isRounded ? (
-                  <div
-                    className={clsx(
-                      "h-1 w-full rounded-full bg-gray-200 dark:bg-gray-700",
-                      barClassName,
-                    )}
-                  >
-                    <div
-                      className={clsx(
-                        "h-1 rounded-full transition-all duration-300",
-                        colors.bar,
-                      )}
-                      style={{ width: `${percentage}%` }}
-                    />
-                  </div>
-                ) : (
-                  <div className={clsx("flex gap-1", barClassName)}>
-                    {Array.from({ length: barsNumber }).map((_, index) => (
-                      <div
-                        key={index}
-                        className={clsx(
-                          "h-[3.5px] mt-[6px] flex-1 rounded-full transition-all duration-300",
-                          index < activeBars
-                            ? colors.bar
-                            : "bg-gray-200 dark:bg-gray-700",
-                        )}
-                      />
-                    ))}
-                  </div>
-                )}
+                <StrengthBar {...barProps} />
               </div>
             </div>
           )}
@@ -267,50 +270,13 @@ export function PasswordStrength({
           {/* ── No rules — bar only ── */}
           {!hasRules && (
             <div className="space-y-1.5">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400 font-medium">
-                  {translation.passwordStrength}
-                </span>
-                <span className={clsx("font-medium", colors.text)}>
-                  {translation.levels[level]}
-                </span>
-              </div>
-              {isRounded ? (
-                <div
-                  className={clsx(
-                    "h-1 w-full rounded-full bg-gray-200 dark:bg-gray-700",
-                    barClassName,
-                  )}
-                >
-                  <div
-                    className={clsx(
-                      "h-1 rounded-full transition-all duration-300",
-                      colors.bar,
-                    )}
-                    style={{ width: `${percentage}%` }}
-                  />
-                </div>
-              ) : (
-                <div className={clsx("flex gap-1", barClassName)}>
-                  {Array.from({ length: barsNumber }).map((_, index) => (
-                    <div
-                      key={index}
-                      className={clsx(
-                        "h-[3.5px] flex-1 mt-0.5 rounded-full transition-all duration-300",
-                        index < activeBars
-                          ? colors.bar
-                          : "bg-gray-200 dark:bg-gray-700",
-                      )}
-                    />
-                  ))}
-                </div>
-              )}
+              <StrengthBar {...barProps} segmentSpacing="mt-0.5" />
             </div>
           )}
         </>
       )}
     </div>
   );
-}
+});
 
 export default PasswordStrength;
