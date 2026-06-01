@@ -5,12 +5,14 @@ Thank you for your interest in contributing! This document provides guidelines a
 ## Development Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/SamuelPrigent/pass-strength-indicator.git
    cd pass-strength-indicator
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
@@ -47,42 +49,43 @@ pass-strength-indicator/
 
 ## Scripts
 
-| Script | Description |
-| --- | --- |
-| `npm run dev` | Start development server |
-| `npm run build` | Build the Next.js demo site |
-| `npm run build:lib` | Build the npm package (dist/) |
-| `npm run test` | Run tests once |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run lint` | Run ESLint |
+| Script               | Description                   |
+| -------------------- | ----------------------------- |
+| `npm run dev`        | Start development server      |
+| `npm run build`      | Build the Next.js demo site   |
+| `npm run build:lib`  | Build the npm package (dist/) |
+| `npm run test`       | Run tests once                |
+| `npm run test:watch` | Run tests in watch mode       |
+| `npm run lint`       | Run ESLint                    |
 
 ## Contributing Guidelines
 
 ### Adding a New Language
 
 1. Create a new translation file in `src/lib/translations/`:
+
    ```typescript
    // src/lib/translations/{locale}.ts
-   import type { Translation } from './types';
+   import type { Translation } from "./types";
 
-   export const {locale}: Translation = {
+   export const { locale }: Translation = {
      levels: {
-       veryWeak: '...',
-       weak: '...',
-       soso: '...',
-       good: '...',
-       strong: '...',
+       veryWeak: "...",
+       weak: "...",
+       soso: "...",
+       good: "...",
+       strong: "...",
      },
-     passwordMustInclude: '...',
-     passwordStrength: '...',
+     passwordMustInclude: "...",
+     passwordStrength: "...",
      rules: {
-       minLength: '...',
-       uppercase: '...',
-       lowercase: '...',
-       number: '...',
-       special: '...',
-       noEmail: '...',
-       noForbiddenWords: '...',
+       minLength: "...",
+       uppercase: "...",
+       lowercase: "...",
+       number: "...",
+       special: "...",
+       noEmail: "...",
+       noForbiddenWords: "...",
      },
    };
    ```
@@ -122,11 +125,12 @@ pass-strength-indicator/
 5. Run the build (`npm run build && npm run build:lib`)
 6. Commit your changes with a descriptive message
 7. Push to your fork
-8. Open a Pull Request
+8. Open a Pull Request `UR BRANCH` => `dev`
 
 ### Commit Messages
 
 Use clear, descriptive commit messages:
+
 - `feat: add Russian translation`
 - `fix: correct score calculation for empty passwords`
 - `docs: update README with new props`
@@ -135,6 +139,7 @@ Use clear, descriptive commit messages:
 ## Reporting Issues
 
 When reporting issues, please include:
+
 - A clear description of the problem
 - Steps to reproduce
 - Expected vs actual behavior
