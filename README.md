@@ -3,10 +3,10 @@
 # pass-strength-indicator
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/pass-strength-indicator"><img src="https://img.shields.io/npm/v/pass-strength-indicator?style=flat-square" alt="npm version"></a>
-  <a href="https://www.npmjs.com/package/pass-strength-indicator"><img src="https://img.shields.io/npm/dt/pass-strength-indicator?style=flat-square" alt="npm downloads"></a>
-  <a href="https://github.com/SamuelPrigent/pass-strength-indicator/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/pass-strength-indicator?style=flat-square" alt="license"></a>
-  <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square&logo=node.js" alt="Node >=18">
+  <a href="https://www.npmjs.com/package/pass-strength-indicator"><img src="https://img.shields.io/npm/v/pass-strength-indicator?style=flat-square&logo=npm&logoColor=white&color=cb3837" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/pass-strength-indicator"><img src="https://img.shields.io/npm/dt/pass-strength-indicator?style=flat-square&logo=npm&logoColor=white&color=007ec6" alt="npm downloads"></a>
+  <a href="https://github.com/SamuelPrigent/pass-strength-indicator/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/pass-strength-indicator?style=flat-square&color=8957e5" alt="license"></a>
+  <img src="https://img.shields.io/badge/node-%3E%3D18-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node >=18">
   <img src="https://img.shields.io/badge/PRs-welcome-ff69b4?style=flat-square" alt="PRs welcome">
 </p>
 
@@ -18,7 +18,6 @@
   <a href="#quick-start">Quick Start</a> •
   <a href="#examples">Examples</a> •
   <a href="#languages">Languages</a> •
-  <a href="#how-it-works">How it works</a> •
   <a href="#props">Props</a> •
   <a href="#license">License</a>
 </p>
@@ -87,20 +86,14 @@ export function PasswordForm() {
 
 ## Examples
 
+All examples are available in → **[docs/EXAMPLES.md](docs/EXAMPLES.md)**.
+
 ### Bar Only Mode
 
 Set `maxRules={0}` to hide validation rules and show only the strength bar:
 
 ```tsx
 <PasswordStrength value={password} maxRules={0} />
-```
-
-### Full Bar Mode
-
-Use `barMode="full"` for a continuous bar instead of segmented bars:
-
-```tsx
-<PasswordStrength value={password} barMode="full" />
 ```
 
 ### Email Pattern Detection
@@ -118,76 +111,6 @@ Choose between 3, 4, or 5 strength bars:
 ```tsx
 <PasswordStrength value={password} barsNumber={3} maxRules={0} />
 ```
-
-### Indicator Background
-
-Add a card background around the indicator section. Independent from `barMode`.
-
-```tsx
-{
-  /* Tailwind classes */
-}
-<PasswordStrength
-  value={password}
-  indicatorBackground="bg-zinc-100 dark:bg-zinc-900"
-/>;
-
-{
-  /* CSS colors (light/dark) */
-}
-<PasswordStrength
-  value={password}
-  indicatorBackground={{ light: "#f5f5f5", dark: "#1c1c1c" }}
-/>;
-```
-
-### Full Configuration
-
-```tsx
-<PasswordStrength
-  value={password}
-  locale="fr"
-  barMode="full"
-  indicatorBackground="bg-zinc-100 dark:bg-zinc-900"
-  barsNumber={5}
-  maxRules={3}
-  email="user@example.com"
-  forbiddenWords={["password", "company"]}
-/>
-```
-
-### Score required
-
-Need to gate a form on the password strength? Read the live score with the `usePasswordStrength` hook (the headless side of the library), feed it the same `password` state as the indicator, and disable your button until the score is high enough.
-
-```tsx
-import { useState } from "react";
-import { PasswordStrength, usePasswordStrength } from "pass-strength-indicator";
-
-export function LoginForm() {
-  const [password, setPassword] = useState("");
-
-  // Same state as the input, so the score stays in sync
-  const { score } = usePasswordStrength(password);
-
-  return (
-    <form className="space-y-2">
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <PasswordStrength value={password} />
-
-      <button type="submit" disabled={score < 4}>
-        Log in
-      </button>
-    </form>
-  );
-}
-```
-
-> Prefer a plain function (no React)? `evaluatePassword(password)` returns `{ passedRules, failedRules, score }` and runs anywhere.
 
 ## Languages
 
@@ -213,41 +136,6 @@ export function LoginForm() {
 |  🇯🇵  | 日本語     | `ja`     |
 |  🇰🇷  | 한국어     | `ko`     |
 
-## How it works
-
-The component turns a password string into a score, a level, and a number of active bars:
-
-```mermaid
-flowchart LR
-    A["value: string"] --> B["evaluatePassword()"]
-    B --> C["5 base rules + optional<br/>(noEmail, noForbiddenWords)"]
-    C --> D["score 0-5<br/>round(passed / total * 5)<br/>minus 2 if email/forbidden matched"]
-    D --> E["scoreToLevel(barsNumber)"]
-    E --> F["example<br/>level: strong"]
-    F --> G["levelToActiveBars()"]
-    G --> H["bars + label + %"]
-```
-
-**Validation rules**
-
-1. **Minimum length**: at least 12 characters
-2. **Uppercase**: at least one uppercase letter
-3. **Lowercase**: at least one lowercase letter
-4. **Number**: at least one digit
-5. **Special character**: at least one special character
-6. **No email pattern** (optional): no 4+ consecutive characters from `email`
-7. **No forbidden words** (optional): none of the specified `forbiddenWords`
-
-**Score → level → bars** (default 5-bar mode)
-
-| Score | Level      | Active bars | Color  |
-| :---: | ---------- | :---------: | ------ |
-|  0–1  | `veryWeak` |      1      | gray   |
-|   2   | `weak`     |      2      | red    |
-|   3   | `soso`     |      3      | orange |
-|   4   | `good`     |      4      | lime   |
-|   5   | `strong`   |      5      | green  |
-
 ## Props
 
 The essentials below. See the **[full props & API reference](docs/PROPS.md)** for every prop, the TypeScript types, and the headless hook.
@@ -264,7 +152,7 @@ The essentials below. See the **[full props & API reference](docs/PROPS.md)** fo
 
 ## Documentation
 
-For live, interactive examples, visit the [documentation site](https://shadcn-pass-strength.vercel.app).
+For live, interactive examples, visit the [documentation site](https://pass-strength-indicator.vercel.app/).
 
 ## Contributing
 
