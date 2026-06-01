@@ -223,7 +223,7 @@ flowchart LR
     B --> C["5 base rules + optional<br/>(noEmail, noForbiddenWords)"]
     C --> D["score 0-5<br/>round(passed / total * 5)<br/>minus 2 if email/forbidden matched"]
     D --> E["scoreToLevel(barsNumber)"]
-    E --> F["level: veryWeak..strong"]
+    E --> F["example<br/>level: strong"]
     F --> G["levelToActiveBars()"]
     G --> H["bars + label + %"]
 ```
