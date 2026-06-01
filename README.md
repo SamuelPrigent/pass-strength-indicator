@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/PRs-welcome-ff69b4?style=flat-square" alt="PRs welcome">
 </p>
 
-🔐 <strong>A lightweight, accessible password-strength indicator for React. 13 languages, dark mode, zero config.</strong>
+🔐 <strong>A lightweight, accessible password-strength indicator for React.</strong>
 
 <p align="center">
   <a href="#features">Features</a> •
@@ -29,27 +29,25 @@
 
 ## Features
 
-| Feature | |
-| --- | :---: |
-| Indicator-only — bring your own input, the component renders the bar and rules | ✅ |
-| 13 languages out of the box | ✅ |
-| Segmented (`default`) or continuous (`full`) bar | ✅ |
-| 3, 4, or 5 strength levels | ✅ |
-| Configurable rules shown (`maxRules`, `0` = bar-only) | ✅ |
-| Email-pattern detection | ✅ |
-| Forbidden words | ✅ |
-| Dark mode out of the box | ✅ |
-| Fully typed with TypeScript | ✅ |
-| Headless hook (`usePasswordStrength`) for custom UI | ✅ |
-| Lightweight — 1 runtime dependency (`clsx`) | ✅ |
+- **Indicator-only** — bring your own input; the component renders the bar and rules
+- **13 languages** out of the box (en, fr, es, de, pt, it, nl, pl, sv, uk, zh, ja, ko)
+- **2 bar modes** — segmented (`default`) or continuous (`full`)
+- **3, 4, or 5** strength levels
+- **Configurable rules** — from `0` (bar-only) up to all rules via `maxRules`
+- **Email-pattern detection** — blocks 4+ consecutive chars from the email
+- **Forbidden words** — block specific words
+- **Dark mode** out of the box
+- **Fully typed** with TypeScript
+- **Headless hook** (`usePasswordStrength`) for custom UI
+- **Lightweight** — 1 runtime dependency (`clsx`)
 
 ## Prerequisites
 
-| Dependency | Version | Required |
-| --- | --- | :---: |
-| [React](https://react.dev) | >= 18 | ✅ |
-| react-dom | >= 18 | ✅ |
-| [Tailwind CSS](https://tailwindcss.com) | v3 or v4 | ✅ |
+| Dependency                              | Version  | Required |
+| --------------------------------------- | -------- | :------: |
+| [React](https://react.dev)              | >= 18    |    ✅    |
+| react-dom                               | >= 18    |    ✅    |
+| [Tailwind CSS](https://tailwindcss.com) | v3 or v4 |    ✅    |
 
 > The component renders Tailwind utility classes, so Tailwind must be set up in your app. It ships as ES2017 and only needs React at runtime; Node.js >= 18 is recommended for your build tooling.
 
@@ -126,17 +124,21 @@ Choose between 3, 4, or 5 strength bars:
 Add a card background around the indicator section. Independent from `barMode`.
 
 ```tsx
-{/* Tailwind classes */}
+{
+  /* Tailwind classes */
+}
 <PasswordStrength
   value={password}
   indicatorBackground="bg-zinc-100 dark:bg-zinc-900"
-/>
+/>;
 
-{/* CSS colors (light/dark) */}
+{
+  /* CSS colors (light/dark) */
+}
 <PasswordStrength
   value={password}
   indicatorBackground={{ light: "#f5f5f5", dark: "#1c1c1c" }}
-/>
+/>;
 ```
 
 ### Full Configuration
@@ -195,21 +197,21 @@ export function LoginForm() {
 <PasswordStrength value={password} locale="fr" />
 ```
 
-| Flag | Language | `locale` |
-| :---: | --- | --- |
-| 🇬🇧 | English | `en` |
-| 🇫🇷 | Français | `fr` |
-| 🇪🇸 | Español | `es` |
-| 🇩🇪 | Deutsch | `de` |
-| 🇵🇹 | Português | `pt` |
-| 🇮🇹 | Italiano | `it` |
-| 🇳🇱 | Nederlands | `nl` |
-| 🇵🇱 | Polski | `pl` |
-| 🇸🇪 | Svenska | `sv` |
-| 🇺🇦 | Українська | `uk` |
-| 🇨🇳 | 中文 | `zh` |
-| 🇯🇵 | 日本語 | `ja` |
-| 🇰🇷 | 한국어 | `ko` |
+| Flag | Language   | `locale` |
+| :--: | ---------- | -------- |
+|  🇬🇧  | English    | `en`     |
+|  🇫🇷  | Français   | `fr`     |
+|  🇪🇸  | Español    | `es`     |
+|  🇩🇪  | Deutsch    | `de`     |
+|  🇵🇹  | Português  | `pt`     |
+|  🇮🇹  | Italiano   | `it`     |
+|  🇳🇱  | Nederlands | `nl`     |
+|  🇵🇱  | Polski     | `pl`     |
+|  🇸🇪  | Svenska    | `sv`     |
+|  🇺🇦  | Українська | `uk`     |
+|  🇨🇳  | 中文       | `zh`     |
+|  🇯🇵  | 日本語     | `ja`     |
+|  🇰🇷  | 한국어     | `ko`     |
 
 ## How it works
 
@@ -238,28 +240,27 @@ flowchart LR
 
 **Score → level → bars** (default 5-bar mode)
 
-| Score | Level | Active bars | Color |
-| :---: | --- | :---: | --- |
-| 0–1 | `veryWeak` | 1 | gray |
-| 2 | `weak` | 2 | red |
-| 3 | `soso` | 3 | orange |
-| 4 | `good` | 4 | lime |
-| 5 | `strong` | 5 | green |
+| Score | Level      | Active bars | Color  |
+| :---: | ---------- | :---------: | ------ |
+|  0–1  | `veryWeak` |      1      | gray   |
+|   2   | `weak`     |      2      | red    |
+|   3   | `soso`     |      3      | orange |
+|   4   | `good`     |      4      | lime   |
+|   5   | `strong`   |      5      | green  |
 
 ## Props
 
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| `value` | `string` | required | Password value |
-| `locale` | `"en" \| "fr" \| ... \| "ko"` | `"en"` | Language (13 supported) |
-| `barMode` | `"default" \| "full"` | `"default"` | Segmented bars or continuous bar |
-| `indicatorBackground` | `string \| { light, dark }` | - | Indicator card background (Tailwind or CSS colors) |
-| `barsNumber` | `3 \| 4 \| 5` | `5` | Number of strength indicator bars |
-| `maxRules` | `number` | `2` | Max validation rules shown (0 = bar only) |
-| `email` | `string` | - | Detects 4+ consecutive chars from email |
-| `forbiddenWords` | `string[]` | - | Words that cannot be in the password |
-| `className` | `string` | - | Additional class name for the container |
-| `barClassName` | `string` | - | Additional class name for the strength bars |
+The essentials below. See the **[full props & API reference](docs/PROPS.md)** for every prop, the TypeScript types, and the headless hook.
+
+| Prop         | Type                  | Default     | Description                      |
+| ------------ | --------------------- | ----------- | -------------------------------- |
+| `value`      | `string`              | required    | Password value                   |
+| `locale`     | `Locale`              | `"en"`      | Language (13 supported)          |
+| `barMode`    | `"default" \| "full"` | `"default"` | Segmented bars or continuous bar |
+| `barsNumber` | `3 \| 4 \| 5`         | `5`         | Number of strength bars          |
+| `maxRules`   | `number`              | `2`         | Rules shown (`0` = bar only)     |
+
+> Also available: `indicatorBackground`, `email`, `forbiddenWords`, `className`, `barClassName`, plus `usePasswordStrength` / `evaluatePassword`. → **[docs/PROPS.md](docs/PROPS.md)**
 
 ## Documentation
 
