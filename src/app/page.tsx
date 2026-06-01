@@ -414,7 +414,8 @@ export default function Home() {
   const [basicPassword, setBasicPassword] = useState(DEFAULT_BASIC);
   const [maxRulesPassword, setMaxRulesPassword] = useState(DEFAULT_MAX_RULES);
   const [barModePassword, setBarModePassword] = useState(DEFAULT_BARMODE);
-  const [indicatorBgPassword, setIndicatorBgPassword] = useState(DEFAULT_INDICATORBG);
+  const [indicatorBgPassword, setIndicatorBgPassword] =
+    useState(DEFAULT_INDICATORBG);
   const [barsPassword, setBarsPassword] = useState(DEFAULT_BARS);
   const [emailValue, setEmailValue] = useState(DEFAULT_EMAIL);
   const [emailPassword, setEmailPassword] = useState(DEFAULT_EMAIL_PWD);
@@ -581,8 +582,7 @@ export default function Home() {
               barMode
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Choose between segmented bars (default) or a continuous full
-              bar.
+              Choose between segmented bars (default) or a continuous full bar.
             </p>
             <CodeBlock
               code={barModeExample}
@@ -614,10 +614,7 @@ export default function Home() {
                       visible={barModeVisible}
                       onToggleVisible={() => setBarModeVisible((v) => !v)}
                     />
-                    <PasswordStrength
-                      value={barModePassword}
-                      barMode="full"
-                    />
+                    <PasswordStrength value={barModePassword} barMode="full" />
                   </div>
                 </div>
               }
@@ -630,8 +627,8 @@ export default function Home() {
               indicatorBackground
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Add a card background around the indicator section. Pass a Tailwind
-              class string or an object with light/dark CSS colors.
+              Add a card background around the indicator section. Pass a
+              Tailwind class string or an object with light/dark CSS colors.
             </p>
             <CodeBlock
               code={indicatorBgExample}
@@ -812,8 +809,8 @@ export default function Home() {
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Read the live score with the{" "}
-              <code className="font-mono text-xs">usePasswordStrength</code> hook
-              and gate your form. Feed it the same password state as the
+              <code className="font-mono text-xs">usePasswordStrength</code>{" "}
+              hook and gate your form. Feed it the same password state as the
               indicator, then disable your submit button until the score is high
               enough. Try typing until the button unlocks.
             </p>
@@ -832,7 +829,7 @@ export default function Home() {
                   <button
                     type="button"
                     disabled={score < 4}
-                    className="w-full mt-2 px-3 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium transition-opacity disabled:opacity-40 disabled:cursor-not-allowed dark:bg-gray-100 dark:text-gray-900"
+                    className="cursor-pointer w-full mt-2 px-3 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium transition-opacity disabled:opacity-40 disabled:cursor-not-allowed dark:bg-gray-100 dark:text-gray-900"
                   >
                     Log in - {score}
                   </button>
