@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/SamuelPrigent/pass-strength-indicator.git"
   },
-  "homepage": "https://shadcn-pass-strength.vercel.app",
+  "homepage": "https://pass-strength-indicator.vercel.app/",
   "bugs": {
     "url": "https://github.com/SamuelPrigent/pass-strength-indicator/issues"
   },
