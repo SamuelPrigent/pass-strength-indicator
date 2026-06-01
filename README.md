@@ -22,7 +22,7 @@
   <a href="#license">License</a>
 </p>
 
-<a href="https://shadcn-pass-strength.vercel.app"><img src="https://raw.githubusercontent.com/SamuelPrigent/pass-strength-indicator/main/public/screen_md_hero.png" width="760" alt="pass-strength-indicator preview"></a>
+<a href="https://pass-strength-indicator.vercel.app/"><img src="https://raw.githubusercontent.com/SamuelPrigent/pass-strength-indicator/main/public/screen_md_hero.png" width="760" alt="pass-strength-indicator preview"></a>
 
 </div>
 
