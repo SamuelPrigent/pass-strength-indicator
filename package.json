@@ -4,6 +4,9 @@
   "description": "A customizable password strength indicator component for React with multi-language support",
   "author": "Samuel Prigent",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SamuelPrigent/pass-strength-indicator.git"

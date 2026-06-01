@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { CodeBlock } from "@/components/CodeBlock";
 import { CopyButton } from "@/components/CopyButton";
 import { HeroSection } from "@/components/HeroSection";
-import { PasswordStrength } from "@/lib";
+import { PasswordStrength, usePasswordStrength } from "@/lib";
 import type { Locale } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -224,6 +224,33 @@ export function EmailCheckExample() {
   );
 }`;
 
+const scoreRequiredExample = `import { useState } from "react";
+import { PasswordStrength, usePasswordStrength } from "pass-strength-indicator";
+
+export function LoginForm() {
+  const [password, setPassword] = useState("");
+
+  // Same state as the input, so the score stays in sync
+  const { score } = usePasswordStrength(password);
+
+  return (
+    <form className="space-y-2">
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full px-3 py-2 border rounded-lg"
+      />
+      <PasswordStrength value={password} />
+
+      {/* "- {score}" is shown only to visualize the value in this demo */}
+      <button type="submit" disabled={score < 4}>
+        Log in - {score}
+      </button>
+    </form>
+  );
+}`;
+
 // Locale configuration with inline SVG flags
 const flags: Record<Locale, React.ReactNode> = {
   en: (
@@ -381,6 +408,7 @@ const DEFAULT_BARS = "Test@123";
 const DEFAULT_EMAIL = "johndoe@mail.com";
 const DEFAULT_EMAIL_PWD = "ndoe9120*JOk";
 const DEFAULT_LOCALE_PWD = "MonMotDePasse";
+const DEFAULT_SCORE = "Test123";
 
 export default function Home() {
   const [basicPassword, setBasicPassword] = useState(DEFAULT_BASIC);
@@ -392,10 +420,14 @@ export default function Home() {
   const [emailPassword, setEmailPassword] = useState(DEFAULT_EMAIL_PWD);
   const [selectedLocale, setSelectedLocale] = useState<Locale>("en");
   const [localePassword, setLocalePassword] = useState(DEFAULT_LOCALE_PWD);
+  const [scorePassword, setScorePassword] = useState(DEFAULT_SCORE);
   // Shared password visibility per example block
   const [maxRulesVisible, setMaxRulesVisible] = useState(false);
   const [barModeVisible, setBarModeVisible] = useState(false);
   const [barsVisible, setBarsVisible] = useState(false);
+
+  // Live score for the "Score required" example (headless hook)
+  const { score } = usePasswordStrength(scorePassword);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -768,6 +800,42 @@ export default function Home() {
                     value={localePassword}
                     locale={selectedLocale}
                   />
+                </div>
+              }
+            />
+          </div>
+
+          {/* Score required: gate a form with the live score (headless) */}
+          <div className="space-y-3">
+            <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">
+              Score required
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Read the live score with the{" "}
+              <code className="font-mono text-xs">usePasswordStrength</code> hook
+              and gate your form. Feed it the same password state as the
+              indicator, then disable your submit button until the score is high
+              enough. Try typing until the button unlocks.
+            </p>
+            <CodeBlock
+              code={scoreRequiredExample}
+              onReset={() => setScorePassword(DEFAULT_SCORE)}
+              preview={
+                <div className="space-y-2">
+                  <Label htmlFor="demo-score">Password</Label>
+                  <PasswordInput
+                    id="demo-score"
+                    value={scorePassword}
+                    onChange={(e) => setScorePassword(e.target.value)}
+                  />
+                  <PasswordStrength value={scorePassword} />
+                  <button
+                    type="button"
+                    disabled={score < 4}
+                    className="w-full mt-2 px-3 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium transition-opacity disabled:opacity-40 disabled:cursor-not-allowed dark:bg-gray-100 dark:text-gray-900"
+                  >
+                    Log in - {score}
+                  </button>
                 </div>
               }
             />

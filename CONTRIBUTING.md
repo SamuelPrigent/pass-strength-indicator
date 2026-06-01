@@ -4,6 +4,8 @@ Thank you for your interest in contributing! This document provides guidelines a
 
 ## Development Setup
 
+> **Prerequisites:** Node.js **>= 20** (required by Next.js 16, used for the demo site) and npm. The published component only needs React >= 18 and Tailwind CSS. shadcn/ui is used **only by the demo site** in this repo, not by the package itself.
+
 1. **Clone the repository**
 
    ```bash
